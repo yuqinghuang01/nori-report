@@ -1,0 +1,666 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Computer Graphics Final Project Report</title>
+
+    <link href="resources/bootstrap.min.css" rel="stylesheet">
+    <link href="resources/offcanvas.css" rel="stylesheet">
+    <link href="resources/custom2014.css" rel="stylesheet">
+    <link href="resources/twentytwenty.css" rel="stylesheet" type="text/css" />
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+
+<body>
+
+<div class="container headerBar">
+		<h1>Project Report - Orhun Görkem, Yuqing Huang</h1>
+</div>
+
+<div class="container contentWrapper">
+<div class="pageContent">
+
+    <p>
+        <b>Student number:</b> 
+    </p>
+    <p>
+        Orhun Görkem: 22-945-216
+    </p>
+    <p>
+        Yuqing Huang: 22-937-387
+    </p>
+
+	<!-- ================================================================= -->
+
+    <br>
+	<h2>Section 1: Motivational Image</h2>
+
+    <p style="text-align:center;"><img src="images/floating_islands.jpg" alt="motivational image"  width="900"/></p>
+
+	<!-- ================================================================= -->
+
+	<h3>Motivation</h3>
+
+    <p>
+        With the motivational image above, we aimed to challenge ourselves by rendering a wide outdoor environment with small details and heterogeneous volumes for light to be traced in. 
+        We believe that the image is suitable for this year's theme: Out of place. 
+        There are rocks with complex textures floating in the sky. 
+        A small neighborhood that consists of some trees, fences, a bridge, and a house is situated on the rocks, which is well out of place! 
+    </p>
+
+    <p>
+        One of the reasons for picking this image was the underlying meaning of it. 
+        The interpretation might be different for everyone, but for us the image symbolizes a comfort zone that is independent of anywhere. 
+        Just like the hourse on the floating island that can view the world from a wide angle, human mind can establish its ideas from a wide range of points of view to adapt to different cases and circumstances. 
+        Even when you are physically <b>out of place</b>, when your mind belongs to everywhere, there is no <b>place</b> you are <b>out of</b>. 
+        The image also represents the juxtaposition of independence and interconnection. 
+        The two floating islands are distant from everything else but are connected with each other, which gives the scene a rich and mysterious ambience.
+    </p>
+
+    <p>    
+        The other reason was of course the possibility of representing various interesting features on the image. 
+        When necessary, we may modify the image a bit to incorporate some features we would like to implement. 
+        The relevant features and their distributions are going to be explained in the next section.
+    </p>
+
+    <h3>Acknowledgements</h3>
+    <p>
+    Our motivational image is obtained from the following website: <a href="https://www.wallpaperflare.com/two-green-and-gray-floating-islands-digital-wallpaper-fantasy-art-wallpaper-gfoe">Wallpaper Flare</a>.
+    </p>
+
+    <!-- ================================================================= -->
+
+    <br>
+    <h2>Section 2: Implementation and Validation of Graded Features (Yuqing Huang)</h2>
+
+    <h3>Images as textures (5)</h3>
+    <p>Using texture mapping, we will be able to map desired 2D textures onto 3D objects in the scene. 
+       I created a class called <code>ImageTexture</code> that inherits from the base class <code>Texture&lt;Color3f&gt;</code>. 
+       In the class constructor, an input png image is read in and the information is stored. 
+       I used an external library <a href="https://github.com/lvandeve/lodepng"><code>loadePNG</code></a> as a PNG image decoder. 
+       Then in the <code>eval</code> function of <code>ImageTexture</code>, I find the correponding position \((d_i, d_j)\) in image file for point \((u, v)\) and finally use bilinear interpolation to return the desired color. 
+       The files added or modified that are relevant to this feature are:
+        <ul>
+            <li><code>src/imgtexture.cpp</code></li>
+            <li><code>src/lodepng.cpp</code></li>
+            <li><code>include/nori/lodepng.h</code></li>
+        </ul>
+    </p>
+
+    <p>For validation, I created two test scenes. I download the object and texture files from <a href="https://www.turbosquid.com/">Turbosquid (3D Models)</a>.</p>
+    
+    <p>The first one contains a globe with an image of flags mapping onto it. The texture image and the comparison test scene (with and without texture mapping) are shown below.</p>
+    
+    <p>Globe Texture File</p>
+    <p style="text-align:center;"><img style='border:1px solid #000000' src="images/yuqing/nations_globe_diffuse.png" alt="globe texture image"  width="500"/></p> <br> <br>
+
+    <p>Globe Test Scene (With and Without Image Texture)</p>
+    <div class="twentytwenty-container">
+        <img src="images/yuqing/test_globe.png" alt="globe test scene with texture mapping" class="img-responsive">
+        <img src="images/yuqing/test_globe_no_texture.png" alt="globe test scene without texture mapping" class="img-responsive">
+    </div> <br>
+
+    <p>The second scene contains a cabin object, with wooden texture mapping onto it. The texture image and the comparison test scene (with and without texture mapping) are shown below.</p>
+
+    <p>Wooden Cabin Texture File</p>
+    <p style="text-align:center;"><img style='border:1px solid #000000' src="images/yuqing/wood_cabin_diffuse.png" alt="cabin texture image"  width="500"/></p> <br> <br>
+
+    <p>Wooden Cabin Test Scene (With and Without Image Texture)</p>
+    <div class="twentytwenty-container">
+        <img src="images/yuqing/test_cabin.png" alt="cabin test scene with texture mapping" class="img-responsive">
+        <img src="images/yuqing/test_cabin_no_texture.png" alt="cabin test scene without texture mapping" class="img-responsive">
+    </div> <br>
+
+
+    <h3>Normal mapping (5)</h3>
+    <p>Normal mapping can be used to depict rough textures of 3D objects. 
+       I created a class called <code>NormalMap</code> that inherits from the base class <code>Texture&lt;Vector3f&gt;</code>. 
+       In the class constructor, an input png image is read in and the information is stored. 
+       I used an external library <a href="https://github.com/lvandeve/lodepng"><code>loadePNG</code></a> as a PNG image decoder. 
+       Then in the <code>eval</code> function of <code>NormalMap</code>, I find the correponding position \((d_i, d_j)\) in image file for point \((u, v)\) and use bilinear interpolation to interpolate the color. 
+       In addition, since each color component is in the range \([0, 1]\) and we want an XYZ vector with each component in the range \([-1, 1]\), a simple mapping is performed using the formula <code>normal = (2 * color) - 1</code>. 
+       In order to attach the normal map to object, I added a field <code>m_normalMap</code> besides <code>m_albedo</code> and a <code>hasNormalMap</code> function to indicate whether a normal map is defined or not. 
+       Finally, in <code>Mesh::setHitInformation</code>, if a normal map exists, the originally calculated normal is perturbed using the normal map. 
+       The files added or modified that are relevant to this feature are:
+        <ul>
+            <li><code>src/normalmap.cpp</code></li>
+            <li><code>src/mesh.cpp</code></li>
+            <li><code>src/sphere.cpp</code></li>
+            <li><code>include/nori/bsdf.h</code></li>
+            <li><code>src/diffuse.cpp</code></li>
+            <li><code>src/lodepng.cpp</code></li>
+            <li><code>include/nori/lodepng.h</code></li>
+        </ul>
+    </p>
+
+    <p>For validation, I created two test scenes. I download the objects and normal maps from <a href="https://www.turbosquid.com/">Turbosquid (3D Models)</a>.</p>
+    
+    <p>The first one contains a globe with brick-looking normal map. The normal map and the comparison test scene (with and without normal mapping) are shown below.</p>
+    
+    <p>Brick Normal Map File</p>
+    <p style="text-align:center;"><img style='border:1px solid #000000' src="images/yuqing/brick_normal.png" alt="brick normal map"  width="500"/></p> <br> <br>
+
+    <p>Globe Test Scene (With and Without Normal Mapping)</p>
+    <div class="twentytwenty-container">
+        <img src="images/yuqing/test_brick.png" alt="globe test scene with normal mapping" class="img-responsive">
+        <img src="images/yuqing/test_brick_no_normalmap.png" alt="globe test scene without normal mapping" class="img-responsive">
+    </div> <br>
+
+    <p>The second scene contains a cabin object, with pre-defined normal map onto it. The normal map and the comparison test scene (with and without normal mapping) are shown below.</p>
+
+    <p>Wooden Cabin Normal Map File</p>
+    <p style="text-align:center;"><img style='border:1px solid #000000' src="images/yuqing/wood_cabin_nm.png" alt="cabin normal map"  width="500"/></p> <br> <br>
+
+    <p>Wooden Cabin Test Scene (With and Without Normal Mapping)</p>
+    <div class="twentytwenty-container">
+        <img src="images/yuqing/test_cabin_nm.png" alt="cabin test scene with normal mapping" class="img-responsive">
+        <img src="images/yuqing/test_cabin.png" alt="cabin test scene without normal mapping" class="img-responsive">
+    </div> <br>
+
+
+    <h3>Depth of field (5)</h3>
+    <p>Depth-of-field feature makes part of the scene in-focus and the rest out-of-focus, which is helpful to make emphasis on certain object.
+        In order to add the depth-of-field feature for the perspective camera, I added the fields <code>m_radius</code> and <code>m_focalLength</code> for <code>PerspectiveCamera</code>.
+        Then in the function <code>PerspectiveCamera::sampleRay</code>, I cast rays from across the lens rather than from a single point. This is done by shifting ray origin on the lens with certain radius and recalculate the ray direction. 
+        The new direction of the ray is calculated using the formula <code>dir = (focalPoint - new_origin).normalized()</code>, where <code>focalPoint</code> is on the focal plane.
+        The files added or modified that are relevant to this feature are:
+         <ul>
+             <li><code>src/perspective.cpp</code></li>
+         </ul>
+     </p>
+ 
+     <p>For validation, I created a test scene using the Cornell Box Scene. 
+        I first used a camera with radius 0.3 and focal length 5 so that the front glass sphere is in-focus while the back one is out-of-focus.
+        I then used a camera with radius 0.3 and focal length 4.5 so that the front and the back glass sphere are both out-of-focus.
+     </p>
+ 
+     <p>Cornell Box Test Scene (With and Without Depth-of-field)</p>
+     <div class="twentytwenty-container">
+         <img src="images/yuqing/test_dof.png" alt="Cornell box scene with dof (focalLength=5)" class="img-responsive">
+         <img src="images/yuqing/test_dof2.png" alt="Cornell box scene with dof (focalLength=4.5)" class="img-responsive">
+         <img src="images/yuqing/test_no_dof.png" alt="Cornell box scene without dof" class="img-responsive">
+     </div> <br>
+
+    <h3>Modeling meshes (5)</h3>
+    <p>For this part, I used Blender to create 3D object model. 
+        Since there is a house in our motivational image, I decided to model a house by myself in Blender.
+        With the help of the tutorial <a href="https://www.youtube.com/watch?v=Np1kscimD4w">Blender Tutorial (Modelling House)</a>, I created a scene with a house consisting of cube meshes and added four light sources.
+        Finally, I used <a href="https://github.com/Phil26AT/BlenderNoriPlugin">BlenderNoriPlugin</a> to export blender scene to Nori xml format.
+        No source code in nori was modified for this part. However, I used the following tools and external Plugin to implement this feature:
+         <ul>
+             <li><a href="https://www.blender.org/download/">Blender</a></li>
+             <li><a href="https://github.com/Phil26AT/BlenderNoriPlugin">BlenderNoriPlugin</a></li>
+         </ul>
+     </p>
+ 
+     <p>For validation, My sample scene with a house illuminated by four light sources is shown below.</p>
+ 
+     <p>House Scene</p>
+     <p style="text-align:center;"><img src="images/yuqing/house.png" alt="house scene"  width="700"/> <br> <br></p>
+
+    <h3>Motion blur (10)</h3>
+    <p>Motion blur helps to depict movement of objects in a static-looking image.
+       To implement this feature, I decided to add a field with type <code>Vector3f</code> named <code>m_velocity</code> in the class <code>Mesh</code>, to store the per frame displacement of the mesh.
+        The velocity information is read-in inside the <code>WavefrontOBJ</code> constructor.
+        In <code>BVH::rayIntersect</code>, I generate a random number \(s\) between 0 and 1 and pass that information to each (triangle) mesh.
+        Then in <code>Mesh::rayIntersect</code> function, when we test intersection between ray and triangle defined by \((p_0, p_1, p_2)\), 
+        I use the random number \(s\) to interpolate the current position of the triangle to be \((p'_0, p'_1, p'_2)\), where \(p'_i=p_i+s\times v\), \(v\) is the user-defined per frame velocity.
+        Therefore, the changing position of object between frames is being considered.
+        Simlarly, for the class <code>Sphere</code>, I added a field with type <code>Vector3f</code> named <code>m_velocity</code>.
+        And then in the function <code>Sphere::rayIntersect</code>, only the position for the center of the sphere needs to be interpolated.
+        I also adjusted the bounding boxes for objects according to their velocities so that the correct rays will be included.
+        The files added or modified that are relevant to this feature are:
+         <ul>
+             <li><code>src/mesh.cpp</code></li>
+             <li><code>src/shape.cpp</code></li>
+             <li><code>src/bvh.cpp</code></li>
+             <li><code>src/sphere.cpp</code></li>
+             <li><code>src/obj.cpp</code></li>
+             <li><code>include/nori/mesh.h</code></li>
+             <li><code>include/nori/sphere.h</code></li>
+         </ul>
+     </p>
+ 
+     <p>For validation, I created two test scenes.</a>.</p>
+     
+     <p>The first test scene is based on the Cornell Box Scene. The left sphere is in motion with an upward velocity of 0.2, while the right sphere is still.</p>
+ 
+     <p>Cornell Box Test Scene (With and without motion blur)</p>
+     <div class="twentytwenty-container">
+         <img src="images/yuqing/box_motion_blur.png" alt="box test scene with motion blur" class="img-responsive">
+         <img src="images/yuqing/box_no_motion_blur.png" alt="box test scene without motion blur" class="img-responsive">
+     </div> <br>
+ 
+     <p>The second test scene is based on the table scene from previous assignment. The left object is in motion with velocity defined by <code>(2, 1.5, 0)</code> and the glass on the right is still.</p>
+ 
+     <p>Table Test Scene (With and without motion blur)</p>
+     <div class="twentytwenty-container">
+         <img src="images/yuqing/table_motion_blur.png" alt="table test scene with motion blur" class="img-responsive">
+         <img src="images/yuqing/table_no_motion_blur.png" alt="table test scene without motion blur" class="img-responsive">
+     </div> <br>
+
+     <p>A potential improvement based on my implementation of motion blur is that instead of linearly interpolate the position of object between frames, it is possible to define both velocity and acceleration of object.
+        And then using the formula \(x'=x+v\Delta t+\frac{1}{2}a\Delta t^2\) to interpolate the position of object between frames.
+        In this way, we can better depict the movement of a falling object, for example.
+        Note that in my implementation, velocity and acceleration are defined per frame rather than per second.
+        Therefore, \(\Delta t\) is between 0 and 1.
+     </p>
+    
+    <h3>Heterogeneous volumetric participating media (30)</h3>
+    <p>In order to define mediums, I created a <code>Medium</code> class which stores <code>sigma_a, sigma_s, phasefunction</code> for the medium.
+        Then I calculate <code>signa_t, albedo</code> of the medium.
+        Function <code>Medium::Tr</code> for homogeneous participating medium computes the transmittance using the closed-form formula.
+        Function <code>Medium::Tr</code> for heterogeneous participating medium estimates the transmittance by performing ratio tracking.
+        Function <code>Medium::sample</code> runs delta-tracking iterations to sample a medium interaction.
+        In addition, there is a density function <code>Medium::Density</code> which retrieves the density of medium at a certain position, depending on what density method we use.
+        I implemented three density methods, the first one returns a uniform density which corresponds to homogeneous participating media.
+        The second one implements an exponential density box, where the density varies based on an exponential function depending on different y positions.
+        The third one implements an exponential density sphere, where the density varies based on an exponential function depending on distance to the sphere center. 
+    </p>
+    <p>
+        For the phase functions, I implemented a class <code>PhaseFunction</code> inherits from the base class <code>NoriObject</code>.
+        I implemented both the isotropic phase function and the Henyey-Greenstein phase function.
+    </p>
+    <p>
+        Finally for the volumetric path tracing integrator, I created a new integrator named <code>PathVol</code>.
+        In the function <code>PathVol::Li</code>, each time in the loop we intersect the ray with the scene and then sample the participating medium if present.
+        Depending on whether there is a volume interaction or not, we have an interaction with a medium or with a surface.
+        As usual, we possibly terimate the path with Russian roulette.
+    </p>
+
+    <p>
+         The files added or modified that are relevant to this feature are:
+          <ul>
+              <li><code>src/path_vol.cpp</code></li>
+              <li><code>src/medium.cpp</code></li>
+              <li><code>src/phasefunction.cpp</code></li>
+              <li><code>src/scene.cpp</code></li>
+              <li><code>include/nori/medium.h</code></li>
+              <li><code>include/nori/phasefunction.h</code></li>
+              <li><code>include/nori/scene.h</code></li>
+              <li><code>include/nori/common.h</code></li>
+          </ul>
+      </p>
+  
+      <p>For validation, I created three test scenes, one with homogeneous volume, one with cubic exponential density volume, and one with spherical exponential density volume.
+        All three scenes are based on the Cornell Box Scene.
+      </p>
+      
+      <p>For the first test, I compare homogeneous medium with density 1 and density 2. The generated images are shown below. 
+        Note that since I defined positive <code>sigma_a</code> and <code>sigma_t</code> values for the medium, the higher density medium appears brighter as there are more particles absording the light.</p>
+  
+      <p>Cornell Box Test Scene 1 (Homogeneous, different density value)</p>
+      <div class="twentytwenty-container">
+          <img src="images/yuqing/homogeneous_1_1_1.png" alt="box test scene homogeneous density 1" class="img-responsive">
+          <img src="images/yuqing/homogeneous_1_1_2.png" alt="box test scene homogeneous density 2" class="img-responsive">
+      </div> <br>
+  
+      <p>For the second test, I compare exponential density box with homogeneous density box. The generated images are shown below.</p>
+  
+      <p>Cornell Box Test Scene 2 (Exponential box vs. homogeneous box)</p>
+      <div class="twentytwenty-container">
+          <img src="images/yuqing/expdensitygrid.png" alt="box test scene exponential density box" class="img-responsive">
+          <img src="images/yuqing/homogeneous_1_1_1.png" alt="box test scene homogeneous density box" class="img-responsive">
+      </div> <br>
+
+      <p>For the third test, I compare exponential density sphere with homogeneous density sphere. The generated images are shown below.</p>
+  
+      <p>Cornell Box Test Scene 3 (Exponential sphere vs. homogeneous sphere)</p>
+      <div class="twentytwenty-container">
+          <img src="images/yuqing/expdensitysphere.png" alt="box test scene exponential density sphere" class="img-responsive">
+          <img src="images/yuqing/uniformsphere.png" alt="box test scene homogeneous density sphere" class="img-responsive">
+      </div> <br>
+
+      <p>There are many other ways to compute the density of medium. One way is to read in density grid information from existing datasets online and store in a <code>Grid</code> structure. 
+        For each position, interpolate the density.
+        Another way is to procedurally compute density. The expontial function that I implemented is one of the simplest way to generate density. 
+        However, to create complex heterogeneous mediums, such as clouds, much more complex functions as well as noise functions are needed.
+     </p>
+
+    <h3>Acknowledgements</h3>
+    <p>I consulted the following resources while implementing my features:
+        <ul>
+            <li><a href="https://www.mathematik.uni-marburg.de/~thormae/lectures/graphics1/graphics_7_1_eng_web.html#1">Graphics Programming - Textures</a></li>
+            <li><a href="http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-13-normal-mapping/">OpenGL Normal Mapping</a></li>
+            <li><a href="https://en.wikipedia.org/wiki/Normal_mapping">Wikipedia Normal Mapping</a></li>
+            <li><a href="https://medium.com/@elope139/depth-of-field-in-path-tracing-e61180417027">Depth of Field in Path Tracing</a></li>
+            <li><a href="https://developer.nvidia.com/sites/all/modules/custom/gpugems/books/GPUGems/gpugems_ch23.html#:~:text=Depth%20of%20field%20is%20the,range%20appear%20out%20of%20focus.">NVIDIA - Depth of Field</a></li>
+            <li><a href="https://www.youtube.com/watch?v=Np1kscimD4w">Blender Tutorial (Modelling House)</a></li>
+            <li><a href="https://devtalk.blender.org/t/c-minimal-implementation-of-motion-blur/15691">Implementation of Motion Blur</a></li>
+            <li><a href="https://www.pbr-book.org/">Physically Based Rendering: From Theory To Implementation (Matt Pharr, Wenzel Jakob, Greg Humphreys)</a></li>
+            <li><a href="https://www.csie.ntu.edu.tw/~cyy/courses/rendering/09fall/lectures/handouts/chap17_volume_4up.pdf">Volume and Participating Media</a></li>
+        </ul>
+    </p>
+
+    <!-- ================================================================= -->
+
+    <br>
+    <h2>Section 3: Implementation and Validation of Graded Features (Orhun Görkem)</h2>
+    
+    <h3>Simple extra emitters (5) - Orhun Görkem</h3>
+
+    <p><code>Time spent: </code> 4 hours <br>
+        <code>Source file: </code> spotlight.cpp <br>
+    </p>
+    
+
+    Spotlight has the following parameters: 
+    <ul>
+        <li><code> Position:</code> For the source of emission</li>
+        <li><code> Power:</code> For radiance</li>
+        <li><code> Falloff:</code> The angle that determines the boundary of spherical cap after which the power of light coming out starts to decrease</li>
+        <li><code> Total width:</code> The angle that determines the boundary of spherical cap of emission</li>
+        <li><code> Direction:</code> Direction of the emission</li>
+    </ul>
+    
+    <p>The cosine values of falloff and total width are immediately calculated to be used in sampling the light source. </p> <br>
+    <p>eval, sample, and pdf functions are implemented as in all of the emitters. 
+        The eval and pdf functions were straightforward. In eval, I returned the given power of spotlight. 
+        The falloff is calculated in the sample function. 
+        In pdf, if the cosine between emitter normal and hitpoint is smaller than cosine of total width, 0 is returned. Otherwise, 1 returned.
+    </p>  <br>
+    <p>In sample, EmitterQueryRecord is filled with necessary information about hitpoint. The shadow ray is calculated with surface reference and direction to the emitter. If the hitpoint is in the range of spotlight, the falloff ratio is calculated. I applied the following code with the information based of PBR:</p>
+    <br>
+<code>auto delta = (cos - m_cos_total) / (m_cos_falloff - m_cos_total);  <br>falloff = (delta * delta) * (delta * delta);</code>
+    <br>
+    
+    
+    Total power is also calculated with the formulation from PBR: <br>
+
+    <code>auto I = m_power / (2*M_PI*(1.f - 0.5f * (m_cos_falloff + m_cos_total)));</code> <br>
+    
+    Function returns: <br>
+<code>return I * falloff / (m_pos - lRec.ref).squaredNorm(); </code> <br>
+    
+    <div class="twentytwenty-container">
+        <img src="images/orhun/cbox_path_mis_point.png" alt="Point Light" class="img-responsive">
+        <img src="images/orhun/cbox_path_mis_spot.png" alt="Spotlight" class="img-responsive">
+    </div> <br>
+
+    <div class="twentytwenty-container">
+        <img src="images/orhun/sponza-direct_point.png" alt="Point Light" class="img-responsive">
+        <img src="images/orhun/sponza-direct_spot.png" alt="Spotlight" class="img-responsive">
+    </div> <br>
+   
+
+
+    <h3>Final gather of photon mapping (5) - Orhun Görkem</h3>
+
+    <p><code>Time spent: </code> 8 hours <br>
+        <code>Source file: </code> finalgather.cpp <br>
+    </p>
+
+    <p>
+        I did my implementation to finalgather.cpp instead of updating photonmapper.cpp to keep the first implementation. 
+        This integrator takes a parameter called gather in addition to photonCount and and photonRadius to determine the number of times the ray is reflected after 
+        encountering a diffuse surface. The original photon mapping works as follows:
+        <ul>
+            <li>Preprocessing: Simulating the emission of photons and keeping the hitpoints in a photon map. </li>
+            <li>Sampling: Applying path tracing to collect the illumination in hitpoints by radience estimation in sampled hitpoints.</li>
+            <li>Tracing goes on until a diffuse surface appears or russian roulette terminates. </li>
+        </ul> 
+        I only changed the radiance estimation part on the diffuse surface before terminating path tracing. In addition to the photon density on the diffuse surface,
+         I sampled one more step of reflection from the diffuse surface, and added the photon densities at those reflection points to the final result. <br>
+         <code>return Li + estimateRadiance(scene, sampler, its, wi, t) + t * (photon_density / (M_PI * m_photonRadius * m_photonRadius * m_photonCount));</code> <br>
+         The estimateRadiance function gets the scene, sampler, intersection, incident ray, and t(weight) as parameters. In a for loop, it samples a new outgoing ray 
+         and brdf. If the outgoing ray intersects with a surface in the scene again, classical radience estimation is applied one more time in the new intersection. 
+         Photon densities are accumulated through the for loops and the average is returned. The number of iterations in for loop depends on the gather parameter, 
+         which we give in the scene xml. Increasing gather reduces time efficiency, but results in higher quality rendering. Nevertheless, I did not see a significant 
+         improvement in the rendering with these updates. 
+    </p>
+
+    <div class="twentytwenty-container">
+        <img src="images/orhun/cbox_pmap_gather.png" alt="Final Gather" class="img-responsive">
+        <img src="images/orhun/cbox_pmap_nogather.png" alt="Original" class="img-responsive">
+    </div> <br>
+
+
+
+    <h3>Environment map emitter (15) - Orhun Görkem</h3>
+
+    <p><code>Time spent: </code> Around 35 hours <br>
+        <code>Source file: </code> envmap.cpp <br>
+    </p>
+
+    <p>Environment map emitter can be seen as an infinitely large emitter that surrounds the scene spherically from a long distance. The source of emission is passed with an exr image as a parameter. 
+        So if we want to inject a prebuilt background to the scene and illuminate the scene with that background, an environment map emitter is very useful. 
+        XML gets the exr file, radius of sphere, and center of sphere as parameters. Radius should be set sufficiently large to make the scene negligibly small 
+    when compared to the emitter. I used radius 50 since it is a very large measure when compared to the metrics of the scene. 
+    So all the parts of the environment map illuminates the scene with negligibly small incident angles with the surface normals, which makes it a good approximation for outdoor lighting. </p>
+    <br>
+
+    <h4>Precomputation</h4>
+
+    <code>env_mapping = Bitmap(props.getString("filename"));</code> <br>
+    <p>The line above reads the exr image and maps it to a Bitmap, which can be seen as a matrix filled with pixel colors. First thing to do is to produce an intensity map from those values. The importance of the intensity map is that we will sample the light with importance to the intensities. Less intensive pixels illuminate the scene negligibly, which makes the rendering less efficient. Intensity map is produced with getIntensityMap function. Function iterates through the pixel colors and applies the following formulation to get intensity:</p>
+    <code>intensities[i][j] = sqrt(color.r() * color.r() + color.g() * color.g() + color.b() * color.b());</code> <br>
+    <p>Since the environment map is formed with spherical projection, it is prone to distortions. With the suggestions from PBR and the paper (Monte Carlo Rendering with Natural Illumination), I multiplied the intensities with the sine of row number / total number of rows to overcome distortion. 
+    </p>
+    <br>
+    <p>For importance sampling by intensities (which are kept in a 2d vector now), the pdf and cdf of the intensities are calculated since I used the inversion method for sampling. To manage that, I established 1d distribution of rows (pu = pdf, Pu = cdf) and conditional 2d distribution (pv = pdf, Pv = cdf). Then I called preCompute2d function to fill the pdfs and cdfs. It gets the following inputs with given sizes: 
+    </p>
+    <ul>
+        <li>f: intensity matrix (n,m)</li>
+        <li>pu (n)</li>
+        <li>Pu (n+1) </li>
+        <li>pv (n,m)</li>
+        <li>Pv (n,m+1)</li>
+    </ul>
+
+    <br>
+    <p>For each row in pv and Pv, preCompute1d is called to fill the pdf and cdfs. preCompute1d is straightforward: The sum of intensities is calculated, than index/sum values are put in pv[i] and cumulative distribution is accumulated for Pv[i]. Same procedure is applied for pu and Pu too, to get the distributions among rows. In short, we calculated the distributions in each row and among the rows. </p>
+    <br>
+    <p>sample2d and sample1d functions make use of these precomputations. sample2d function samples a point in 2d matrix with respect to the intensities. To do that, it samples a row with sample1d function, and samples an index in the selected row with sample1d function again. p(u,v) = p(u) * p(u|v)</p>
+    <br>
+    <p>sample1d function uses the inversion method by iterating through the cdf and when the cdf exceeds the given canonical random variable, it returns the sample at that point.
+
+    </p>
+    <br>
+
+    <h4>Eval, Pdf, Sample</h4>
+
+    <p>
+        Eval evaluates the emitter. It gets a incident direction. We need to map this direction to the environment lighting. 
+        Since environment map is a sphere, I converted the incident direction wi to spherical coordinates. Then I obtained the indices u, v by 
+        applying proportion to the spherical coordinates. For each u,v sample, I obtained the surrounding four pixels. I averaged the r, g, b values 
+        of the four pixels and returned the color.
+    </p> 
+    <br>
+    <p>
+        Pdf should return the probability of selecting the sampled pixel. So I used the same steps to map the incident direction to the sampled pixel. 
+        Since we already precomputed the pdfs, I just returned the multiplication of p(selecting row x) and p(selecting column y given that row x is selected). 
+        <code>return pv[x][y] * pu[x];  </code> 
+    </p>
+    <br>
+    <p>
+        Sample function samples 2d point using the sample2d function explained above. This function also returns the probability of the sample. 
+        This probability is not accurate when we work with spherical coordinates, so I calculated the Jacobian for the transformation and also obtained the spherical 
+        coordinates from samples. I calculated the incident direction from spherical coordinates and assigned it to EmitterQueryRecord. The rest is usual part 
+        as in all of the emitters.
+    </p>
+
+    <div class="twentytwenty-container">
+        <img src="images/orhun/cbox_envmap.png" alt="Environment map illuminated scene" class="img-responsive">
+        <img src="images/orhun/stonewall.png" alt="Environment" class="img-responsive" >
+    </div> <br>
+
+    <div class="twentytwenty-container">
+        <img src="images/orhun/cbox_envmap2.png" alt="Environment map illuminated scene" class="img-responsive">
+        <img src="images/orhun/citynight.png" alt="Environment" class="img-responsive">
+    </div> <br>
+
+    <div class="twentytwenty-container">
+        <img src="images/orhun/cbox_envmap3.png" alt="Environment map illuminated scene" class="img-responsive">
+        <img src="images/orhun/sky4.png" alt="Environment" class="img-responsive">
+    </div> <br>
+
+
+
+
+    <h3>Disney BSDF (15) - Orhun Görkem</h3>
+    <p><code>Time spent: </code> 40 hours <br>
+        <code>Source file: </code> disney.cpp <br>
+        <code>Updated file: </code> warp.cpp <br>
+    </p>
+
+    <p>
+        I implemented the following parameters: Sheen, Specular, Roughness, Clearcoat, Clearcoatgloss. (Graded)
+        I also made use of metallic parameter to make the reflections more realistic as sometimes diffuse reflections were necessary and parametrizing it 
+        was not hard. I used the original paper of Disney BRDF and the original implementation from Walt Disney Studios. However, this was not sufficient since 
+        the details about sampling and pdf were not that clear. I found 2 blogs to fill the missing parts in my mind. Maybe it is because I did not implement all the 
+        parameters, but I cannot say that my implementation is a total success. I sometimes sample noisy dots in extreme parameters and have a line on the radius of 
+        the sphere in validation scenes. Nonetheless, my implementation results in some artistic images and the changes of the parameters are visible.
+    </p>
+
+    <h4>Sheen</h4>
+
+    <p>
+        Most of the parameters bring an evaluation coefficient to the eval function. To calculate that coefficient, I implemented evalSheen function. 
+        The function gets the Schlick Fresnel (FH) parameter as input. This parameter is defined in the paper in appendices and included in the original implementation. 
+        I also gave the luminance as input, which is a linear combination of the base color of the surface. I calculated the tint color by dividing the 
+        base color with the luminance. Then I linearly interpolated the tint with white with sheenTint parameter. I returned the multiplication of 
+        sheen, FH, and interpolated term. I divided the result by 2. This was a very empirical adjustment. I thought the coefficient from sheen was extra 
+        effective in the final image, and wanted to reduce the effect. 
+    </p>
+
+    <h4>Clearcoat</h4>
+
+    <p>
+        I implemented evalClearcoat function. For the clearcoat parameter, I applied the methods from the blogs I referenced. I sampled GTR1, SeparableSmithGGXG1 distributions. Calculated schlick weight and 
+        returned the multiplication of these with clearcoat parameter. Note that clearcoatGloss parameter was used to sample GTR1.
+    </p>
+
+    <h4>Specular</h4>
+
+    <p>
+        I implemented evalSpecular function. This parameter is usually applied with GTR2 sampling, which makes use of anisotrophy parameter. As I did not implement anisotrophy, I assumed it 
+        to be 0, which makes aspect ratio 1. Then I calculated alpha with roughness parameter. I sampled from Smith GGX and GTR 2 distributions. Also color Fs 
+        is calculated with the given Schlick weight. Note that the sampling functions I used here are implemented in warp.cpp. 
+    </p>
+
+    <h4>Eval, Pdf, Sample</h4>
+
+    <p>
+        Eval function gets input and output directions of the ray to compute the normals and pass them to the functions that I mentioned above. It also calculates 
+    luminance and Schlick weight since they are used multiple times for different Disney BRDF parameters. c_sheen, c_clearcoat, and c_specular are obtained and their 
+    sum is returned as the evaluation. 
+
+    I implemented pdf function with the help of the blog. Yet, it was very similar to the one of microfacet.cpp since Disney BRDF is microfacet based. 
+    There are three possible cases: Diffuse case, metallic case with clearcoat, metallic case without clearcoat. 
+    <br>
+
+    <code> 
+        return (1.0f - m_metallic)*(cosTheta_o / M_PI) 
+                    +(m_metallic)*(Ds2 * Gtr2* cosTheta_h * J_h) 
+                    + (1.0 - Gtr2)*(Ds1 * cosTheta_h * J_h);
+    </code> <br>
+    The term in the first line is for diffuse case, basically divides the cosine by PI. The term in second line is for the case without clearcoat. 
+    The sampled Gtr2 variable determines if the sample shows clearcoat property. The multiplied terms are stated in the paper. J_h is the jacobian term, 
+    which is calculated as the same way in microfacets. The third describes the case with clearcoat, has the sample from GTR1 distribution. <br>
+
+    In the sample function, outgoing direction is sampled according to the disney parameters. The coefficient for diffuse case is 1 - metallic parameter. 
+    If sampled canonical random variable is smaller than diffuse coefficient, outgoing direction is sampled with squareToCosineHemisphere function from 
+    Warp class. Else, we analyze the specular case, which can include clearcoat lobe or not. This depends of Gtr2 = 1 / (1 + clearcoat). If sampled 
+    random variable is smaller than Gtr2, there is no clearcoat lobe. We sample from Gtr2 distribution, which I implemented in Warp class. Note that 
+    roughness is also a parameter in this sampling. Also note that we sample wh (half vector between incident and outgoing vectors) in specular cases. 
+    If there is a clearcoat lobe, wh is sampled from Gtr1, with the clearcoatGloss parameter. After sampling wh, outgoing vector wo is obtained as follows: 
+    <code> bRec.wo = (2.0f * wh * (wh.dot(bRec.wi)) - bRec.wi).normalized(); </code> .
+
+
+    </p>
+    
+    <h4>Validation</h4>
+<br>
+    <div style="text-align: center">
+        <h4>Default image with all parameters 0.5</h4>
+    <img src="images/orhun/cbox_mis1.png" alt="Default 0.5 parameters" width="80%"  /> <br> 
+    </div>
+
+    <div class="twentytwenty-container">
+        <img src="images/orhun/cbox_mis2.png" alt="Specular = 0.0" class="img-responsive">
+        <img src="images/orhun/cbox_mis3.png" alt="Specular = 0.25" class="img-responsive">
+        <img src="images/orhun/cbox_mis4.png" alt="Specular = 0.75" class="img-responsive">
+        <img src="images/orhun/cbox_mis5.png" alt="Specular = 1.0" class="img-responsive">
+    </div> <br>
+
+    <div class="twentytwenty-container">
+        <img src="images/orhun/cbox_mis6.png" alt="Roughness = 0.0" class="img-responsive">
+        <img src="images/orhun/cbox_mis7.png" alt=Roughness = 0.25" class="img-responsive">
+        <img src="images/orhun/cbox_mis8.png" alt="Roughness = 0.75" class="img-responsive">
+        <img src="images/orhun/cbox_mis9.png" alt="Roughness = 1.0" class="img-responsive">
+    </div> <br>
+
+    <div class="twentytwenty-container">
+        <img src="images/orhun/cbox_mis10.png" alt="Clearcoat = 0.0" class="img-responsive">
+        <img src="images/orhun/cbox_mis11.png" alt=Clearcoat = 0.25" class="img-responsive">
+        <img src="images/orhun/cbox_mis12.png" alt="Clearcoat = 0.75" class="img-responsive">
+        <img src="images/orhun/cbox_mis13.png" alt="Clearcoat = 1.0" class="img-responsive">
+    </div> <br>
+
+    <div class="twentytwenty-container">
+        <img src="images/orhun/cbox_mis14.png" alt="Clearcoat Gloss = 0.0" class="img-responsive">
+        <img src="images/orhun/cbox_mis15.png" alt="Clearcoat Gloss = 0.25" class="img-responsive">
+        <img src="images/orhun/cbox_mis16.png" alt="Clearcoat Gloss = 0.75" class="img-responsive">
+        <img src="images/orhun/cbox_mis17.png" alt="Clearcoat Gloss = 1.0" class="img-responsive">
+    </div> <br>
+
+    <div class="twentytwenty-container">
+        <img src="images/orhun/cbox_mis18.png" alt="Sheen = 0.0" class="img-responsive">
+        <img src="images/orhun/cbox_mis19.png" alt=Sheen = 0.25" class="img-responsive">
+        <img src="images/orhun/cbox_mis20.png" alt="Sheen = 0.75" class="img-responsive">
+        <img src="images/orhun/cbox_mis21.png" alt="Sheen = 1.0" class="img-responsive">
+    </div> <br>
+
+    <!-- ================================================================= -->
+
+    <br>
+
+    <h3>Acknowledgements</h3>
+    <p>I consulted the following resources while implementing my features:
+        <ul>
+            <li><a href="https://www.pbr-book.org/">Physically Based Rendering Book</a></li>
+            <li><a href="https://github.com/mmp/pbrt-v3/blob/master/src/lights/infinite.cpp">Infinite emitter implementation from PBR</a></li>
+            <li><a href="https://web.cs.wpi.edu/~emmanuel/courses/cs563/S07/projects/envsample.pdf">Paper for sampling environment map emitter</a></li>
+            <li><a href="https://www.researchgate.net/publication/258702787_Importance_Driven_Environment_Map_Sampling">Importance driven environment sampling</a></li>
+            <li><a href="https://github.com/wdas/brdf">WDAS Disney BRDF implementation</a></li>
+            <li><a href="https://schuttejoe.github.io/post/disneybsdf">A blog for Disney BRDF</a></li>
+            <li><a href="https://media.disneyanimation.com/uploads/production/publication_asset/48/asset/s2012_pbs_disney_brdf_notes_v3.pdf ">Original Paper of Disney BRDF</a></li>
+            <li><a href="https://www.pbr-book.org/">Physically Based Rendering: From Theory To Implementation (Matt Pharr, Wenzel Jakob, Greg Humphreys)</a></li>
+            <li><a href="http://shihchinw.github.io/2015/07/implementing-disney-principled-brdf-in-arnold.html"> Another blog for Disney BRDF</a></li>
+        </ul>
+    </p>
+
+
+
+
+
+    <h2>Section 4: Conclusion</h2>
+    We have decided not to join the rendering competition. 
+    Nevertheless, the process of doing research and implementing all the features has been truly rewarding and has consolidated our knowlegdge on the topics.
+    We really enjoyed working on the project together and excited to see the images from other classmates!
+</div>
+</div>
+
+
+<!-- Bootstrap core JavaScript -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="resources/bootstrap.min.js"></script>
+<script src="resources/jquery.event.move.js"></script>
+<script src="resources/jquery.twentytwenty.js"></script>
+
+
+<script>
+$(window).load(function(){$(".twentytwenty-container").twentytwenty({default_offset_pct: 0.5});});
+</script>
+
+</body>
+</html>
